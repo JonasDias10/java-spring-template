@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: java-template
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/template
+    username: postgres
+    password: postgres
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baselineOnMigrate: true
+    validate-on-migrate: true
+    table: flyway_schema
+
+token:
+  secret: ${TOKEN_SECRET:abcdefghijklmnopqrstuvwxyz}
+  issuer: ${TOKEN_ISSUER:template}
+  expiration-in-days: ${TOKEN_EXPIRATION_IN_DAYS:10}
