@@ -38,6 +38,10 @@ cd java-template
 - Create a PostgreSQL database and update environment variables in .env, if you haven't already just copy .env.example
   and rename it to .env and update the values.
 
+## API Documentation
+
+- The API documentation can be found at http://localhost:8080/swagger-ui/index.html
+
 ## Dependencies
 
 This project includes several key dependencies:
