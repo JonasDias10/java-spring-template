@@ -40,6 +40,9 @@ dependencies {
     // Auth0 Dependencies
     implementation 'com.auth0:java-jwt:4.4.0'
 
+    // Dotenv Dependencies
+    implementation 'me.paulschwarz:spring-dotenv:4.0.0'
+
     // Lombok Dependencies
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
