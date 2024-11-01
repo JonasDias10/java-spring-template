@@ -1,4 +1,4 @@
-# Java Template Backend
+# Java Spring Template Backend
 
 The Java Template Application is a Spring Boot-based backend template designed to serve as a foundation for building
 robust web applications. This project incorporates various essential features such as security, database management, API

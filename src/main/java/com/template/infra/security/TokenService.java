@@ -4,8 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.template.common.Messages;
 import com.template.common.exceptions.BusinessException;
+import com.template.user.helpers.UserMessages;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -37,7 +37,7 @@ public class TokenService {
                     .withExpiresAt(generateExpirationDate())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
-            throw new BusinessException(Messages.ERROR_AUTHENTICATING_USER.getMessage());
+            throw new BusinessException(UserMessages.ERROR_AUTHENTICATING_USER);
         }
     }
 
@@ -51,7 +51,7 @@ public class TokenService {
                     .verify(token)
                     .getSubject();
         } catch (JWTVerificationException exception) {
-            throw new BusinessException(Messages.USER_INVALID_TOKEN.getMessage());
+            throw new BusinessException(UserMessages.USER_INVALID_TOKEN);
         }
     }
 

@@ -30,4 +30,5 @@ public class FindAllUsers {
 
         return ResponseEntity.ok().body(response);
     }
+
 }

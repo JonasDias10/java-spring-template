@@ -1,11 +1,11 @@
 package com.template.user.usecases;
 
-import com.template.common.Messages;
 import com.template.common.exceptions.BusinessException;
 import com.template.infra.security.TokenService;
 import com.template.user.dtos.LoginInput;
 import com.template.user.dtos.LoginResponse;
 import com.template.user.entity.User;
+import com.template.user.helpers.UserMessages;
 import com.template.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ public class Login {
         authenticateUser(input);
 
         var userDB = (User) userRepository.findByEmail(input.email())
-                .orElseThrow(() -> new BusinessException(Messages.USER_NOT_FOUND_BY_EMAIL.getMessage()));
+                .orElseThrow(() -> new BusinessException(UserMessages.USER_NOT_FOUND_BY_EMAIL));
 
         var token = tokenService.generateToken(userDB.getEmail());
         var response = new LoginResponse(
@@ -43,7 +43,7 @@ public class Login {
         try {
             authenticationManager.authenticate(usernamePasswordToken);
         } catch (Exception exception) {
-            throw new BusinessException(Messages.USER_INVALID_CREDENTIALS.getMessage());
+            throw new BusinessException(UserMessages.USER_INVALID_CREDENTIALS);
         }
     }
 

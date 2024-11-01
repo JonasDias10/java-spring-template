@@ -1,6 +1,6 @@
 package com.template.infra.security;
 
-import com.template.common.Messages;
+import com.template.user.helpers.UserMessages;
 import com.template.user.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -32,7 +32,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             var email = tokenService.validateToken(token);
 
             UserDetails user = userRepository.findByEmail(email)
-                    .orElseThrow(() -> new RuntimeException(Messages.USER_NOT_FOUND.getMessage()));
+                    .orElseThrow(() -> new RuntimeException(UserMessages.USER_NOT_FOUND));
 
             var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -48,4 +48,5 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         return authHeader.substring(7);
     }
+
 }

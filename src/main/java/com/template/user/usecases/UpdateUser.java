@@ -1,9 +1,9 @@
 package com.template.user.usecases;
 
-import com.template.common.Messages;
 import com.template.common.exceptions.BusinessException;
 import com.template.user.dtos.UpdateInput;
 import com.template.user.entity.User;
+import com.template.user.helpers.UserMessages;
 import com.template.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ public class UpdateUser {
 
     public ResponseEntity<Void> execute(Long id, UpdateInput input) {
         var user = userRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(Messages.USER_NOT_FOUND.getMessage()));
+                .orElseThrow(() -> new BusinessException(UserMessages.USER_NOT_FOUND));
 
         validateEmail(input.email(), user.getEmail());
 
@@ -31,7 +31,7 @@ public class UpdateUser {
 
     private void validateEmail(String newEmail, String currentEmail) {
         if (newEmail != null && emailAlreadyExists(currentEmail, newEmail)) {
-            throw new BusinessException(Messages.USER_EMAIL_ALREADY_EXISTS.getMessage());
+            throw new BusinessException(UserMessages.USER_EMAIL_ALREADY_EXISTS);
         }
     }
 
@@ -48,6 +48,7 @@ public class UpdateUser {
     }
 
     private boolean emailAlreadyExists(String currentEmail, String newEmail) {
-        return !currentEmail.equals(newEmail) && userRepository.existsByEmailAndDeletedTrueOrDeletedFalse(newEmail);
+        return !currentEmail.equals(newEmail) && userRepository.existsByEmailIgnoringSoftDelete(newEmail);
     }
+
 }

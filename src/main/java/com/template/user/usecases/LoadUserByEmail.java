@@ -1,6 +1,6 @@
 package com.template.user.usecases;
 
-import com.template.common.Messages;
+import com.template.user.helpers.UserMessages;
 import com.template.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +17,7 @@ public class LoadUserByEmail implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException(Messages.USER_NOT_FOUND.getMessage()));
+                .orElseThrow(() -> new UsernameNotFoundException(UserMessages.USER_NOT_FOUND));
     }
 
 }

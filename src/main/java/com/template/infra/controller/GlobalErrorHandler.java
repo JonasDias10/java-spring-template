@@ -1,6 +1,6 @@
-package com.template.common.controller;
+package com.template.infra.controller;
 
-import com.template.common.Messages;
+import com.template.common.GlobalMessages;
 import com.template.common.dtos.ErrorMessage;
 import com.template.common.exceptions.BusinessException;
 import org.slf4j.Logger;
@@ -34,8 +34,7 @@ public class GlobalErrorHandler {
     public ResponseEntity<ErrorMessage> handleException(@NonNull Exception exception) {
         logger.error("Exception: {}", exception.getMessage());
 
-        return ResponseEntity.internalServerError().body(new ErrorMessage(Messages.DEFAULT_ERROR_MESSAGE.getMessage()));
+        return ResponseEntity.internalServerError().body(new ErrorMessage(GlobalMessages.DEFAULT_ERROR_MESSAGE));
     }
-
 
 }
