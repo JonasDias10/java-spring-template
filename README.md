@@ -42,6 +42,30 @@ cd java-template
 
 - The API documentation can be found at http://localhost:8080/swagger-ui/index.html
 
+## Spotless Linting
+
+- Spotless linting is enabled by default.
+- To run spotless, run `./gradlew spotlessCheck`
+- To fix spotless, run `./gradlew spotlessApply`
+
+### IntelliJ JRE Config
+
+First install the google-java-format plugin. After that, restart the IDE.
+The google-java-format plugin uses some internal classes that aren't available without extra configuration. To use the
+plugin, you need to add some options to your IDE's Java runtime. To do that, go to Help→Edit Custom VM Options... and
+paste in these lines:
+
+````
+--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED
+--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED
+--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED
+--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED
+--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED
+--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED
+````
+
+Once you've done that, restart the IDE.
+
 ## Dependencies
 
 This project includes several key dependencies:

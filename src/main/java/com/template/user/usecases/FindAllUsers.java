@@ -13,22 +13,18 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class FindAllUsers {
 
-    private final UserRepository userRepository;
+  private final UserRepository userRepository;
 
-    public ResponseEntity<ResponseData<Iterable<UserResponse>>> execute(Integer take, Integer skip) {
-        Pageable pageable = Pageable.ofSize(take).withPage(skip);
+  public ResponseEntity<ResponseData<Iterable<UserResponse>>> execute(Integer take, Integer skip) {
+    Pageable pageable = Pageable.ofSize(take).withPage(skip);
 
-        var users = userRepository.findAll(pageable);
+    var users = userRepository.findAll(pageable);
 
-        var total = users.getTotalElements();
-        var content = users.getContent();
+    var total = users.getTotalElements();
+    var content = users.getContent();
 
-        var response = new ResponseData<>(
-                total,
-                UserMapper.INSTANCE.toUsersResponse(content)
-        );
+    var response = new ResponseData<>(total, UserMapper.INSTANCE.toUsersResponse(content));
 
-        return ResponseEntity.ok().body(response);
-    }
-
+    return ResponseEntity.ok().body(response);
+  }
 }

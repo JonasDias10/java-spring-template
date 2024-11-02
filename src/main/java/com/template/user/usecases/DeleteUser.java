@@ -11,16 +11,16 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class DeleteUser {
 
-    private final UserRepository userRepository;
+  private final UserRepository userRepository;
 
-    public ResponseEntity<Void> execute(Long id) {
-        var user = userRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(UserMessages.USER_NOT_FOUND));
+  public ResponseEntity<Void> execute(Long id) {
+    var user =
+        userRepository
+            .findById(id)
+            .orElseThrow(() -> new BusinessException(UserMessages.USER_NOT_FOUND));
 
-        userRepository.delete(user);
+    userRepository.delete(user);
 
-        return ResponseEntity.ok().build();
-    }
-
+    return ResponseEntity.ok().build();
+  }
 }
-

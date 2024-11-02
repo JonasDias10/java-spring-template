@@ -15,22 +15,18 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class Register {
 
-    private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+  private final UserRepository userRepository;
+  private final BCryptPasswordEncoder passwordEncoder;
 
-    public ResponseEntity<Void> execute(RegisterInput input) {
-        if (userRepository.existsByEmailIgnoringSoftDelete(input.email())) {
-            throw new BusinessException(UserMessages.USER_ALREADY_EXISTS);
-        }
-
-        userRepository.save(new User(
-                input.name(),
-                input.email(),
-                passwordEncoder.encode(input.password()),
-                Role.ROLE_USER
-        ));
-
-        return ResponseEntity.ok().build();
+  public ResponseEntity<Void> execute(RegisterInput input) {
+    if (userRepository.existsByEmailIgnoringSoftDelete(input.email())) {
+      throw new BusinessException(UserMessages.USER_ALREADY_EXISTS);
     }
 
+    userRepository.save(
+        new User(
+            input.name(), input.email(), passwordEncoder.encode(input.password()), Role.ROLE_USER));
+
+    return ResponseEntity.ok().build();
+  }
 }

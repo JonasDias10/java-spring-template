@@ -17,34 +17,32 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class Login {
 
-    private final TokenService tokenService;
-    private final UserRepository userRepository;
-    private final AuthenticationManager authenticationManager;
+  private final TokenService tokenService;
+  private final UserRepository userRepository;
+  private final AuthenticationManager authenticationManager;
 
-    public ResponseEntity<LoginResponse> execute(LoginInput input) {
-        authenticateUser(input);
+  public ResponseEntity<LoginResponse> execute(LoginInput input) {
+    authenticateUser(input);
 
-        var userDB = (User) userRepository.findByEmail(input.email())
+    var userDB =
+        (User)
+            userRepository
+                .findByEmail(input.email())
                 .orElseThrow(() -> new BusinessException(UserMessages.USER_NOT_FOUND_BY_EMAIL));
 
-        var token = tokenService.generateToken(userDB.getEmail());
-        var response = new LoginResponse(
-                userDB.getId(),
-                userDB.getName(),
-                userDB.getEmail(),
-                token
-        );
+    var token = tokenService.generateToken(userDB.getEmail());
+    var response = new LoginResponse(userDB.getId(), userDB.getName(), userDB.getEmail(), token);
 
-        return ResponseEntity.ok(response);
+    return ResponseEntity.ok(response);
+  }
+
+  private void authenticateUser(LoginInput input) {
+    var usernamePasswordToken =
+        new UsernamePasswordAuthenticationToken(input.email(), input.password());
+    try {
+      authenticationManager.authenticate(usernamePasswordToken);
+    } catch (Exception exception) {
+      throw new BusinessException(UserMessages.USER_INVALID_CREDENTIALS);
     }
-
-    private void authenticateUser(LoginInput input) {
-        var usernamePasswordToken = new UsernamePasswordAuthenticationToken(input.email(), input.password());
-        try {
-            authenticationManager.authenticate(usernamePasswordToken);
-        } catch (Exception exception) {
-            throw new BusinessException(UserMessages.USER_INVALID_CREDENTIALS);
-        }
-    }
-
+  }
 }

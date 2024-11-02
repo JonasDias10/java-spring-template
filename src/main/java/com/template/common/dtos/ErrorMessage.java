@@ -1,7 +1,3 @@
 package com.template.common.dtos;
 
-public record ErrorMessage(
-        String message
-) {
-}
-
+public record ErrorMessage(String message) {}

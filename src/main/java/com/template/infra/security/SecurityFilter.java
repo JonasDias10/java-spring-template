@@ -6,6 +6,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,39 +15,42 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.io.IOException;
-
 @Component
 @AllArgsConstructor
 public class SecurityFilter extends OncePerRequestFilter {
-    private final TokenService tokenService;
-    private final UserRepository userRepository;
+  private final TokenService tokenService;
+  private final UserRepository userRepository;
 
-    @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest req, @NonNull HttpServletResponse res, @NonNull FilterChain filterChain)
-            throws ServletException, IOException {
+  @Override
+  protected void doFilterInternal(
+      @NonNull HttpServletRequest req,
+      @NonNull HttpServletResponse res,
+      @NonNull FilterChain filterChain)
+      throws ServletException, IOException {
 
-        String token = recoverToken(req);
+    String token = recoverToken(req);
 
-        if (token != null) {
-            var email = tokenService.validateToken(token);
+    if (token != null) {
+      var email = tokenService.validateToken(token);
 
-            UserDetails user = userRepository.findByEmail(email)
-                    .orElseThrow(() -> new RuntimeException(UserMessages.USER_NOT_FOUND));
+      UserDetails user =
+          userRepository
+              .findByEmail(email)
+              .orElseThrow(() -> new RuntimeException(UserMessages.USER_NOT_FOUND));
 
-            var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
-
-        filterChain.doFilter(req, res);
+      var authentication =
+          new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+      SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
-    private String recoverToken(HttpServletRequest request) {
-        var authHeader = request.getHeader("Authorization");
+    filterChain.doFilter(req, res);
+  }
 
-        if (authHeader == null) return null;
+  private String recoverToken(HttpServletRequest request) {
+    var authHeader = request.getHeader("Authorization");
 
-        return authHeader.substring(7);
-    }
+    if (authHeader == null) return null;
 
+    return authHeader.substring(7);
+  }
 }

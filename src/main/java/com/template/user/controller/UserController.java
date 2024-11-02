@@ -14,39 +14,38 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class UserController {
 
-    private final Login login;
-    private final Register register;
-    private final UpdateUser updateUser;
-    private final DeleteUser deleteUser;
-    private final FindAllUsers findAllUsers;
+  private final Login login;
+  private final Register register;
+  private final UpdateUser updateUser;
+  private final DeleteUser deleteUser;
+  private final FindAllUsers findAllUsers;
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/all")
-    public ResponseEntity<ResponseData<Iterable<UserResponse>>> findAll(
-            @RequestParam(name = "take", required = false, defaultValue = "10") Integer take,
-            @RequestParam(name = "skip", required = false, defaultValue = "0") Integer skip
-    ) {
-        return findAllUsers.execute(take, skip);
-    }
+  @PreAuthorize("hasRole('ADMIN')")
+  @GetMapping("/all")
+  public ResponseEntity<ResponseData<Iterable<UserResponse>>> findAll(
+      @RequestParam(name = "take", required = false, defaultValue = "10") Integer take,
+      @RequestParam(name = "skip", required = false, defaultValue = "0") Integer skip) {
+    return findAllUsers.execute(take, skip);
+  }
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginInput input) {
-        return login.execute(input);
-    }
+  @PostMapping("/login")
+  public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginInput input) {
+    return login.execute(input);
+  }
 
-    @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody @Valid RegisterInput input) {
-        return register.execute(input);
-    }
+  @PostMapping("/register")
+  public ResponseEntity<Void> register(@RequestBody @Valid RegisterInput input) {
+    return register.execute(input);
+  }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable(name = "id") Long id, @RequestBody @Valid UpdateInput input) {
-        return updateUser.execute(id, input);
-    }
+  @PutMapping("/{id}")
+  public ResponseEntity<Void> update(
+      @PathVariable(name = "id") Long id, @RequestBody @Valid UpdateInput input) {
+    return updateUser.execute(id, input);
+  }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable(name = "id") Long id) {
-        return deleteUser.execute(id);
-    }
-
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> delete(@PathVariable(name = "id") Long id) {
+    return deleteUser.execute(id);
+  }
 }
